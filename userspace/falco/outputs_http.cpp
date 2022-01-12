@@ -17,7 +17,6 @@ limitations under the License.
 #include "outputs_http.h"
 #include "logger.h"
 #include "banned.h" // This raises a compilation error when certain functions are used
-//#include "config_falco.h"
 
 void falco::outputs::output_http::output(const message *msg)
 {
@@ -35,8 +34,7 @@ void falco::outputs::output_http::output(const message *msg)
 		} else {
 			slist1 = curl_slist_append(slist1, "Content-Type: text/plain");
 		}
-//        string falco_useragent = string("User-Agent: falco/falco-")+string(FALCO_VERSION);
-        slist1 = curl_slist_append(slist1, "User-Agent: falcosecurity/falco"); 
+        slist1 = curl_slist_append(slist1, m_oc.options["user_agent"].c_str());
 
 		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, slist1);
 		curl_easy_setopt(curl, CURLOPT_URL, m_oc.options["url"].c_str());
